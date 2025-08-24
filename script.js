@@ -62,5 +62,9 @@ function handleCopy(pill) {
 
 refreshBtn.addEventListener('click', generateNames);
 regionSelect.addEventListener('change', generateNames);
-
-generateNames();
+// Wait for fonts to load so the pill dimensions are accurate on first render
+if (document.fonts && document.fonts.ready) {
+  document.fonts.ready.then(generateNames);
+} else {
+  window.addEventListener('load', generateNames);
+}
