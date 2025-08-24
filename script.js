@@ -83,3 +83,48 @@ if (document.fonts && document.fonts.ready) {
 } else {
   window.addEventListener('load', generateNames);
 }
+
+// theme toggle
+const themeToggle = document.getElementById('theme-toggle');
+if (themeToggle) {
+  const thumb = themeToggle.querySelector('.thumb');
+  const buttons = themeToggle.querySelectorAll('.icon');
+
+  function applyTheme(theme) {
+    const root = document.documentElement;
+    const body = document.body;
+    root.removeAttribute('data-theme');
+    body.classList.remove('body--light', 'body--dark');
+    if (theme === 'light') {
+      root.setAttribute('data-theme', 'light');
+      body.classList.add('body--light');
+    } else if (theme === 'dark') {
+      root.setAttribute('data-theme', 'dark');
+      body.classList.add('body--dark');
+    } else {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      root.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+      body.classList.add(prefersDark ? 'body--dark' : 'body--light');
+    }
+  }
+
+  function moveThumb(index) {
+    const segment = themeToggle.offsetWidth / buttons.length;
+    thumb.style.transform = `translateX(${segment * index}px)`;
+  }
+
+  buttons.forEach((btn, index) => {
+    btn.addEventListener('click', () => {
+      buttons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      moveThumb(index);
+      applyTheme(btn.dataset.theme);
+    });
+  });
+
+  window.addEventListener('load', () => {
+    const activeIndex = Array.from(buttons).findIndex(b => b.classList.contains('active'));
+    moveThumb(activeIndex);
+    applyTheme(buttons[activeIndex].dataset.theme);
+  });
+}
