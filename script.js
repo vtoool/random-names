@@ -7,12 +7,13 @@ const NUM_PILLS = 9;
 sanitizeNameData(nameData);
 
 function sanitizeNameData(data) {
-  // Allow letters from any language plus common name punctuation
-  const regex = /^[\p{L}' -]+$/u;
+  // Remove diacritics and restrict to English letters with common punctuation
+  const ascii = /^[A-Z' -]+$/;
   Object.values(data).forEach(region => {
     ['first', 'last'].forEach(list => {
       region[list] = region[list]
-        .filter(name => regex.test(name))
+        .map(name => name.normalize('NFD').replace(/[\u0300-\u036f]/g, ''))
+        .filter(name => ascii.test(name))
         .map(name => name.toUpperCase());
     });
   });
