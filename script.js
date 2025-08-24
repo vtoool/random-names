@@ -2,6 +2,7 @@
 const regionSelect = document.getElementById('region');
 const refreshBtn = document.getElementById('refresh');
 const container = document.getElementById('name-container');
+const qKey = document.getElementById('q-key');
 const NUM_PILLS = 9;
 
 sanitizeNameData(nameData);
@@ -74,6 +75,30 @@ function handleCopy(pill) {
     }, 700);
   });
 }
+
+function copyFirstAvailable() {
+  const pill = container.querySelector('.pill:not(.copied)');
+  if (pill) {
+    handleCopy(pill);
+  } else {
+    generateNames();
+  }
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key.toLowerCase() === 'q') {
+    if (e.repeat) return;
+    e.preventDefault();
+    if (qKey) qKey.classList.add('pressed');
+    copyFirstAvailable();
+  }
+});
+
+document.addEventListener('keyup', e => {
+  if (e.key.toLowerCase() === 'q' && qKey) {
+    qKey.classList.remove('pressed');
+  }
+});
 
 refreshBtn.addEventListener('click', generateNames);
 regionSelect.addEventListener('change', generateNames);
