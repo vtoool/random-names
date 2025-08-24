@@ -64,6 +64,4 @@ h1 {
 .pill.copied {
   background: rgba(240, 240, 240, 0.9);
   color: #666666;
-  cursor: default;
-  pointer-events: none;
 }
