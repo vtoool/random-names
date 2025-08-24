@@ -70,6 +70,7 @@ body{
   text-align:center;
   width:90%;
   max-width:600px;
+  position:relative;
 }
 
 h1{
@@ -151,5 +152,35 @@ h1{
   background:var(--line);
   color:var(--muted);
   border-color:var(--line);
+}
+
+#q-hint{
+  position:absolute;
+  top:8px;
+  left:8px;
+  display:flex;
+  align-items:center;
+  gap:4px;
+  font-size:14px;
+  color:var(--muted);
+}
+
+#q-hint .key{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:20px;
+  height:20px;
+  padding:2px 6px;
+  border:1px solid var(--line);
+  border-radius:4px;
+  background:var(--segment);
+  box-shadow:0 2px 0 var(--line);
+  font-weight:600;
+}
+
+#q-hint .key.pressed{
+  box-shadow:0 1px 0 var(--line) inset;
+  transform:translateY(2px);
 }
 
