@@ -7,7 +7,8 @@ const NUM_PILLS = 9;
 sanitizeNameData(nameData);
 
 function sanitizeNameData(data) {
-  const regex = /^[A-Za-z]+$/;
+  // Allow letters from any language plus common name punctuation
+  const regex = /^[\p{L}' -]+$/u;
   Object.values(data).forEach(region => {
     ['first', 'last'].forEach(list => {
       region[list] = region[list]
