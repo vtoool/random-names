@@ -56,7 +56,7 @@ function handleCopy(pill) {
     setTimeout(() => {
       pill.textContent = name;
       pill.classList.add('copied');
-    }, 1000);
+    }, 700);
   });
 }
 
