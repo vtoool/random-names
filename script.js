@@ -4,14 +4,27 @@ const refreshBtn = document.getElementById('refresh');
 const container = document.getElementById('name-container');
 const NUM_PILLS = 9;
 
+sanitizeNameData(nameData);
+
+function sanitizeNameData(data) {
+  const regex = /^[A-Za-z]+$/;
+  Object.values(data).forEach(region => {
+    ['first', 'last'].forEach(list => {
+      region[list] = region[list]
+        .filter(name => regex.test(name))
+        .map(name => name.toUpperCase());
+    });
+  });
+}
+
 function randomFrom(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
 function generateName(region) {
   const data = nameData[region];
-  const first = randomFrom(data.first);
-  const last = randomFrom(data.last);
+  const first = randomFrom(data.first).toUpperCase();
+  const last = randomFrom(data.last).toUpperCase();
   return `-${last}/${first}`;
 }
 
@@ -37,7 +50,6 @@ function generateNames() {
 }
 
 function handleCopy(pill) {
-  if (pill.classList.contains('copied')) return;
   const name = pill.dataset.name;
   navigator.clipboard.writeText(name).then(() => {
     pill.textContent = '✓ Copied name';
