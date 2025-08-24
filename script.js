@@ -12,9 +12,13 @@ function sanitizeNameData(data) {
   Object.values(data).forEach(region => {
     ['first', 'last'].forEach(list => {
       region[list] = region[list]
-        .map(name => name.normalize('NFD').replace(/[\u0300-\u036f]/g, ''))
-        .filter(name => ascii.test(name))
-        .map(name => name.toUpperCase());
+        .map(name =>
+          name
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .toUpperCase()
+        )
+        .filter(name => ascii.test(name));
     });
   });
 }
