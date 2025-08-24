@@ -7,19 +7,28 @@ const NUM_PILLS = 9;
 sanitizeNameData(nameData);
 
 function sanitizeNameData(data) {
-  // Remove diacritics and restrict to English letters with common punctuation
+  // Remove diacritics and restrict to English letters.
   const ascii = /^[A-Z' -]+$/;
   Object.values(data).forEach(region => {
-    ['first', 'last'].forEach(list => {
-      region[list] = region[list]
-        .map(name =>
-          name
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .toUpperCase()
-        )
-        .filter(name => ascii.test(name));
-    });
+    // Sanitize first names
+    region.first = region.first
+      .map(name =>
+        name
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .toUpperCase()
+      )
+      .filter(name => ascii.test(name));
+    // Sanitize last names and strip spaces and punctuation
+    region.last = region.last
+      .map(name =>
+        name
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/[-'` ]/g, '')
+          .toUpperCase()
+      )
+      .filter(name => /^[A-Z]+$/.test(name));
   });
 }
 
