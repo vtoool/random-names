@@ -6,7 +6,7 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #f0f4ff, #d9e2ff);
+  background: #ffffff;
   text-align: center;
 }
 
@@ -42,9 +42,9 @@ h1 {
 }
 
 .pill {
-  padding: 10px 20px;
+  padding: 6px 16px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.8);
+  background: #ffffff;
   border: 1px solid #cccccc;
   cursor: pointer;
   user-select: none;
@@ -54,10 +54,11 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .pill:hover {
-  box-shadow: 0 0 10px 3px rgba(100, 150, 255, 0.7);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .pill.copied {
