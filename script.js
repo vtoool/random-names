@@ -71,8 +71,10 @@ function generateNames() {
     pills.push(pill);
   }
   const maxWidth = Math.max(...pills.map(p => p.offsetWidth));
+  const maxHeight = Math.max(...pills.map(p => p.offsetHeight));
   pills.forEach(p => {
     p.style.width = `${maxWidth}px`;
+    p.style.height = `${maxHeight}px`;
   });
 }
 

@@ -1,31 +1,67 @@
 body {
+  margin: 0;
   font-family: Arial, sans-serif;
-  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f0f4ff, #d9e2ff);
+  text-align: center;
+}
+
+h1 {
+  margin-bottom: 20px;
 }
 
 .controls {
-  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.controls select,
+.controls button {
+  padding: 8px 12px;
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+  background: #ffffff;
+}
+
+.controls button {
+  cursor: pointer;
 }
 
 #name-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .pill {
-  padding: 10px 15px;
-  border-radius: 20px;
-  background: #ffffff;
+  padding: 10px 20px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.8);
   border: 1px solid #cccccc;
   cursor: pointer;
   user-select: none;
   text-align: center;
+  transition: box-shadow 0.3s ease, background 0.3s ease;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pill:hover {
+  box-shadow: 0 0 10px 3px rgba(100, 150, 255, 0.7);
 }
 
 .pill.copied {
-  background: #f0f0f0;
+  background: rgba(240, 240, 240, 0.9);
   color: #666666;
   cursor: default;
   pointer-events: none;
