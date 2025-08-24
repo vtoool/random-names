@@ -67,7 +67,7 @@ function generateNames() {
 function handleCopy(pill) {
   const name = pill.dataset.name;
   navigator.clipboard.writeText(name).then(() => {
-    pill.textContent = '✓ Copied name';
+    pill.textContent = '✓ Copied';
     setTimeout(() => {
       pill.textContent = name;
       pill.classList.add('copied');
