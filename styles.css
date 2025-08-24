@@ -148,3 +148,18 @@ h1{
   border-color:var(--line);
 }
 
+/* theme overrides */
+:root[data-theme='light']{
+  --canvas:#F2F4F7; --card:#FFF;
+  --ink:#111827; --muted:#6B7280; --line:#E5E7EB;
+  --accent:#16A34A; --brand:#FF7A00; --action:#111827;
+  --btn-border:rgba(17,24,39,.12); --segment:#F3F4F6; --bar:#E5E7EB;
+}
+
+:root[data-theme='dark']{
+  --canvas:#0F172A; --card:#1E293B;
+  --ink:#F8FAFC; --muted:#9CA3AF; --line:#334155;
+  --accent:#16A34A; --brand:#FF7A00; --action:#2563EB;
+  --btn-border:rgba(255,255,255,.12); --segment:#273244; --bar:#334155;
+}
+
