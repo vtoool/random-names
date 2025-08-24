@@ -59,6 +59,7 @@ function generateName(region) {
 
 function generateNames() {
   container.innerHTML = '';
+  const pills = [];
   for (let i = 0; i < NUM_PILLS; i++) {
     const name = generateName(regionSelect.value);
     const pill = document.createElement('div');
@@ -67,14 +68,19 @@ function generateNames() {
     pill.dataset.name = name;
     pill.addEventListener('click', () => handleCopy(pill));
     container.appendChild(pill);
+    pills.push(pill);
   }
+  const maxWidth = Math.max(...pills.map(p => p.offsetWidth));
+  pills.forEach(p => {
+    p.style.width = `${maxWidth}px`;
+  });
 }
 
 function handleCopy(pill) {
   if (pill.classList.contains('copied')) return;
   const name = pill.dataset.name;
   navigator.clipboard.writeText(name).then(() => {
-    pill.textContent = 'Copied name';
+    pill.textContent = '✓ Copied name';
     setTimeout(() => {
       pill.textContent = name;
       pill.classList.add('copied');
