@@ -2,23 +2,28 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Random Name Generator</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1>Random Name Generator</h1>
-  <div class="controls">
-    <label for="region">Region:</label>
-    <select id="region">
-      <option value="northAmerica">North America</option>
-      <option value="europe">Europe</option>
-      <option value="india">India</option>
-      <option value="africa">Africa</option>
-      <option value="asia">Asia</option>
-    </select>
-    <button id="refresh" title="Refresh names">🔄</button>
+  <div class="app-card">
+    <h1>Random Name Generator</h1>
+    <div class="controls">
+      <label for="region">Region:</label>
+      <select id="region">
+        <option value="northAmerica">North America</option>
+        <option value="europe">Europe</option>
+        <option value="india">India</option>
+        <option value="africa">Africa</option>
+        <option value="asia">Asia</option>
+      </select>
+      <button id="refresh" title="Refresh names">🔄</button>
+    </div>
+    <div id="name-container"></div>
   </div>
-  <div id="name-container"></div>
   <script src="names.js"></script>
   <script src="script.js"></script>
 </body>
