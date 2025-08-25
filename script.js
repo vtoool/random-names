@@ -100,6 +100,16 @@ document.addEventListener('keyup', e => {
   }
 });
 
+if (qKey) {
+  qKey.addEventListener('click', () => {
+    copyFirstAvailable();
+  });
+  qKey.addEventListener('mousedown', () => qKey.classList.add('pressed'));
+  ['mouseup', 'mouseleave'].forEach(evt =>
+    qKey.addEventListener(evt, () => qKey.classList.remove('pressed'))
+  );
+}
+
 refreshBtn.addEventListener('click', generateNames);
 regionSelect.addEventListener('change', generateNames);
 // Wait for fonts to load so the pill dimensions are accurate on first render
