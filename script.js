@@ -69,7 +69,8 @@ function handleCopy(pill) {
   const name = pill.dataset.name;
   navigator.clipboard.writeText(name).then(() => {
     pill.textContent = '✓ Copied';
-    pill.classList.add('copied');
+    pill.classList.add('copied', 'copied-anim');
+    pill.addEventListener('animationend', () => pill.classList.remove('copied-anim'), { once: true });
     setTimeout(() => {
       pill.textContent = name;
     }, 700);
