@@ -160,8 +160,8 @@ h1{
   left:8px;
   display:flex;
   align-items:center;
-  gap:4px;
-  font-size:14px;
+  gap:8px;
+  font-size:16px;
   color:var(--muted);
 }
 
@@ -169,14 +169,21 @@ h1{
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  min-width:20px;
-  height:20px;
-  padding:2px 6px;
+  min-width:28px;
+  height:28px;
+  padding:4px 8px;
   border:1px solid var(--line);
-  border-radius:4px;
+  border-radius:6px;
   background:var(--segment);
   box-shadow:0 2px 0 var(--line);
   font-weight:600;
+  cursor:pointer;
+  transition:box-shadow .15s ease-out, transform .15s ease-out;
+}
+
+#q-hint .key:hover{
+  transform:translateY(-1px);
+  box-shadow:0 3px 0 var(--line);
 }
 
 #q-hint .key.pressed{
