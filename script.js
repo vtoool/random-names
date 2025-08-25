@@ -85,6 +85,12 @@ function copyFirstAvailable() {
   }
 }
 
+function animateQKey() {
+  if (!qKey) return;
+  qKey.classList.add('animate');
+  qKey.addEventListener('animationend', () => qKey.classList.remove('animate'), { once: true });
+}
+
 document.addEventListener('keydown', e => {
   if (e.key.toLowerCase() === 'q') {
     if (e.repeat) return;
@@ -97,6 +103,7 @@ document.addEventListener('keydown', e => {
 document.addEventListener('keyup', e => {
   if (e.key.toLowerCase() === 'q' && qKey) {
     qKey.classList.remove('pressed');
+    animateQKey();
   }
 });
 
@@ -106,7 +113,10 @@ if (qKey) {
   });
   qKey.addEventListener('mousedown', () => qKey.classList.add('pressed'));
   ['mouseup', 'mouseleave'].forEach(evt =>
-    qKey.addEventListener(evt, () => qKey.classList.remove('pressed'))
+    qKey.addEventListener(evt, () => {
+      qKey.classList.remove('pressed');
+      animateQKey();
+    })
   );
 }
 
