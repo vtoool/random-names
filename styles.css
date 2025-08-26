@@ -227,3 +227,49 @@ h1{
 #kayak-results a{text-decoration:none;color:var(--action);}
 #kayak-results a:hover{text-decoration:underline;}
 
+.tabs{
+  display:flex;
+  justify-content:center;
+  margin-bottom:var(--space-4);
+  gap:var(--space-3);
+  border-bottom:1px solid var(--line);
+}
+
+.tab{
+  background:none;
+  border:none;
+  padding:var(--space-3) var(--space-4);
+  cursor:pointer;
+  font-size:16px;
+  color:var(--muted);
+}
+
+.tab.active{
+  color:var(--ink);
+  border-bottom:2px solid var(--ink);
+  font-weight:600;
+}
+
+.tab-content{display:none;}
+.tab-content.active{display:block;}
+
+.kayak-form{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:var(--space-3);
+  margin-bottom:var(--space-4);
+}
+
+.kayak-form input{
+  padding:10px 14px;
+  border-radius:var(--r-md);
+  border:1px solid var(--line);
+  background:var(--card);
+  color:var(--ink);
+  width:100%;
+  max-width:400px;
+}
+
+.error{color:var(--brand);}
+

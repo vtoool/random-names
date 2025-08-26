@@ -3,8 +3,13 @@ const regionSelect = document.getElementById('region');
 const refreshBtn = document.getElementById('refresh');
 const container = document.getElementById('name-container');
 const qKey = document.getElementById('q-key');
-const kayakBtn = document.getElementById('kayak');
 const kayakResults = document.getElementById('kayak-results');
+const kayakForm = document.getElementById('kayak-form');
+const kayakUrl = document.getElementById('kayak-url');
+const kayakFlexInput = document.getElementById('kayak-flex');
+const kayakError = document.getElementById('kayak-error');
+const tabButtons = document.querySelectorAll('.tab');
+const tabContents = document.querySelectorAll('.tab-content');
 const NUM_PILLS = 9;
 
 sanitizeNameData(nameData);
@@ -123,20 +128,30 @@ if (qKey) {
   );
 }
 
-if (kayakBtn) {
-  kayakBtn.addEventListener('click', () => {
-    const url = prompt('Paste Kayak multi-city URL:');
-    if (!url) return;
-    const flex = parseInt(prompt('Flexibility (±1-7 days):'), 10);
+tabButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    tabButtons.forEach(b => b.classList.remove('active'));
+    tabContents.forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(`tab-${btn.dataset.tab}`).classList.add('active');
+  });
+});
+
+if (kayakForm) {
+  kayakForm.addEventListener('submit', e => {
+    e.preventDefault();
+    kayakError.textContent = '';
+    const url = kayakUrl.value.trim();
+    const flex = parseInt(kayakFlexInput.value, 10);
     if (isNaN(flex) || flex < 1 || flex > 7) {
-      alert('Invalid flexibility');
+      kayakError.textContent = 'Flex must be between 1 and 7.';
       return;
     }
     try {
       const data = kayakFlex(url, flex);
       renderKayak(data);
     } catch (err) {
-      alert('Could not parse URL');
+      kayakError.textContent = 'Could not parse URL.';
     }
   });
 }
