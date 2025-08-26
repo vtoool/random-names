@@ -6,7 +6,7 @@ const qKey = document.getElementById('q-key');
 const kayakResults = document.getElementById('kayak-results');
 const kayakForm = document.getElementById('kayak-form');
 const kayakUrl = document.getElementById('kayak-url');
-const kayakFlexInput = document.getElementById('kayak-flex');
+const kayakFlexSelect = document.getElementById('kayak-flex');
 const kayakError = document.getElementById('kayak-error');
 const tabButtons = document.querySelectorAll('.tab');
 const tabContents = document.querySelectorAll('.tab-content');
@@ -142,7 +142,7 @@ if (kayakForm) {
     e.preventDefault();
     kayakError.textContent = '';
     const url = kayakUrl.value.trim();
-    const flex = parseInt(kayakFlexInput.value, 10);
+    const flex = parseInt(kayakFlexSelect.value, 10);
     if (isNaN(flex) || flex < 1 || flex > 7) {
       kayakError.textContent = 'Flex must be between 1 and 7.';
       return;
@@ -169,7 +169,7 @@ function dateRange(dateStr, flex) {
     d.setDate(d.getDate() + i);
     arr.push(d.toISOString().slice(0, 10));
   }
-  return arr;
+  return [...new Set(arr)];
 }
 
 function replaceDates(baseUrl, newDates) {
@@ -208,19 +208,36 @@ function renderKayak(data) {
   if (dates.length === 2) {
     const [outOpts, retOpts] = options;
     const table = document.createElement('table');
+    const thead = document.createElement('thead');
+    const headRow = document.createElement('tr');
+    headRow.appendChild(document.createElement('th'));
+    retOpts.forEach(d2 => {
+      const th = document.createElement('th');
+      th.textContent = formatDM(d2);
+      headRow.appendChild(th);
+    });
+    thead.appendChild(headRow);
+    table.appendChild(thead);
+    const tbody = document.createElement('tbody');
     outOpts.forEach(d1 => {
       const tr = document.createElement('tr');
+      const rowHead = document.createElement('th');
+      rowHead.textContent = formatDM(d1);
+      tr.appendChild(rowHead);
       retOpts.forEach(d2 => {
         const td = document.createElement('td');
         const a = document.createElement('a');
         a.href = replaceDates(url, [d1, d2]);
         a.target = '_blank';
-        a.textContent = `${formatDM(d1)}-${formatDM(d2)}`;
+        a.textContent = '•';
+        a.setAttribute('aria-label', `${formatDM(d1)} - ${formatDM(d2)}`);
+        a.title = `${formatDM(d1)} - ${formatDM(d2)}`;
         td.appendChild(a);
         tr.appendChild(td);
       });
-      table.appendChild(tr);
+      tbody.appendChild(tr);
     });
+    table.appendChild(tbody);
     kayakResults.appendChild(table);
   } else {
     const combos = generateCombinations(options);
