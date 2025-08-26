@@ -174,10 +174,8 @@ function dateRange(dateStr, flex) {
 
 function replaceDates(baseUrl, newDates) {
   const u = new URL(baseUrl);
-  let path = u.pathname;
-  newDates.forEach(d => {
-    path = path.replace(/\d{4}-\d{2}-\d{2}/, d);
-  });
+  let i = 0;
+  const path = u.pathname.replace(/\d{4}-\d{2}-\d{2}/g, () => newDates[i++]);
   return `${u.origin}${path}${u.search}`;
 }
 
