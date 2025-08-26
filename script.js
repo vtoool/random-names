@@ -3,6 +3,8 @@ const regionSelect = document.getElementById('region');
 const refreshBtn = document.getElementById('refresh');
 const container = document.getElementById('name-container');
 const qKey = document.getElementById('q-key');
+const kayakBtn = document.getElementById('kayak');
+const kayakResults = document.getElementById('kayak-results');
 const NUM_PILLS = 9;
 
 sanitizeNameData(nameData);
@@ -119,6 +121,108 @@ if (qKey) {
       animateQKey();
     })
   );
+}
+
+if (kayakBtn) {
+  kayakBtn.addEventListener('click', () => {
+    const url = prompt('Paste Kayak multi-city URL:');
+    if (!url) return;
+    const flex = parseInt(prompt('Flexibility (±1-7 days):'), 10);
+    if (isNaN(flex) || flex < 1 || flex > 7) {
+      alert('Invalid flexibility');
+      return;
+    }
+    try {
+      const data = kayakFlex(url, flex);
+      renderKayak(data);
+    } catch (err) {
+      alert('Could not parse URL');
+    }
+  });
+}
+
+function formatDM(dateStr) {
+  const d = new Date(dateStr + 'T00:00');
+  return d.toLocaleDateString(undefined, { day: 'numeric', month: 'short' });
+}
+
+function dateRange(dateStr, flex) {
+  const base = new Date(dateStr + 'T00:00');
+  const arr = [];
+  for (let i = -flex; i <= flex; i++) {
+    const d = new Date(base);
+    d.setDate(d.getDate() + i);
+    arr.push(d.toISOString().slice(0, 10));
+  }
+  return arr;
+}
+
+function replaceDates(baseUrl, newDates) {
+  const u = new URL(baseUrl);
+  let path = u.pathname;
+  newDates.forEach(d => {
+    path = path.replace(/\d{4}-\d{2}-\d{2}/, d);
+  });
+  return `${u.origin}${path}${u.search}`;
+}
+
+function generateCombinations(arrays, idx = 0, curr = [], out = []) {
+  if (idx === arrays.length) {
+    out.push([...curr]);
+    return out;
+  }
+  arrays[idx].forEach(val => {
+    curr[idx] = val;
+    generateCombinations(arrays, idx + 1, curr, out);
+  });
+  return out;
+}
+
+function kayakFlex(url, flex) {
+  const u = new URL(url);
+  const dates = u.pathname.match(/\d{4}-\d{2}-\d{2}/g);
+  if (!dates) throw new Error('No dates in URL');
+  const options = dates.map(d => dateRange(d, flex));
+  return { url, dates, options };
+}
+
+function renderKayak(data) {
+  kayakResults.innerHTML = '';
+  const { url, dates, options } = data;
+  const info = document.createElement('p');
+  info.textContent = `Current dates: ${formatDM(dates[0])} - ${formatDM(dates[dates.length - 1])}`;
+  kayakResults.appendChild(info);
+  if (dates.length === 2) {
+    const [outOpts, retOpts] = options;
+    const table = document.createElement('table');
+    outOpts.forEach(d1 => {
+      const tr = document.createElement('tr');
+      retOpts.forEach(d2 => {
+        const td = document.createElement('td');
+        const a = document.createElement('a');
+        a.href = replaceDates(url, [d1, d2]);
+        a.target = '_blank';
+        a.textContent = `${formatDM(d1)}-${formatDM(d2)}`;
+        td.appendChild(a);
+        tr.appendChild(td);
+      });
+      table.appendChild(tr);
+    });
+    kayakResults.appendChild(table);
+  } else {
+    const combos = generateCombinations(options);
+    const list = document.createElement('ul');
+    combos.forEach(combo => {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = replaceDates(url, combo);
+      a.target = '_blank';
+      a.textContent = combo.map(formatDM).join(' - ');
+      li.appendChild(a);
+      list.appendChild(li);
+    });
+    kayakResults.appendChild(list);
+  }
 }
 
 refreshBtn.addEventListener('click', generateNames);
