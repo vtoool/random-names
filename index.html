@@ -11,22 +11,38 @@
 </head>
 <body>
   <div class="card">
-    <div id="q-hint">Press <button id="q-key" class="key" type="button">Q</button></div>
-    <h1>Random Name Generator</h1>
-    <div class="controls">
-      <label for="region">Region:</label>
-      <select id="region">
-        <option value="northAmerica">North America</option>
-        <option value="europe">Europe</option>
-        <option value="india">India</option>
-        <option value="africa">Africa</option>
-        <option value="asia">Asia</option>
-      </select>
-      <button id="refresh" class="btn-primary" title="Refresh names">🔄</button>
-      <button id="kayak" class="btn-primary" title="Kayak flex search">🛶</button>
+    <div class="tabs">
+      <button class="tab active" data-tab="names">Random Names</button>
+      <button class="tab" data-tab="kayak">Kayak Flex Search</button>
     </div>
-    <div id="name-container"></div>
-    <div id="kayak-results"></div>
+    <div id="tab-names" class="tab-content active">
+      <div id="q-hint">Press <button id="q-key" class="key" type="button">Q</button></div>
+      <h1>Random Name Generator</h1>
+      <div class="controls">
+        <label for="region">Region:</label>
+        <select id="region">
+          <option value="northAmerica">North America</option>
+          <option value="europe">Europe</option>
+          <option value="india">India</option>
+          <option value="africa">Africa</option>
+          <option value="asia">Asia</option>
+        </select>
+        <button id="refresh" class="btn-primary" title="Refresh names">🔄</button>
+      </div>
+      <div id="name-container"></div>
+    </div>
+    <div id="tab-kayak" class="tab-content">
+      <h1>Kayak Flex Search</h1>
+      <form id="kayak-form" class="kayak-form">
+        <label for="kayak-url">Kayak multi-city URL:</label>
+        <input type="url" id="kayak-url" required>
+        <label for="kayak-flex">Flexibility (± days):</label>
+        <input type="number" id="kayak-flex" min="1" max="7" value="1" required>
+        <button type="submit" class="btn-primary">Generate</button>
+        <p id="kayak-error" class="error" aria-live="polite"></p>
+      </form>
+      <div id="kayak-results"></div>
+    </div>
   </div>
   <script src="names.js"></script>
   <script src="script.js"></script>
