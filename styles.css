@@ -223,7 +223,7 @@ h1{
 
 #kayak-results{margin-top:var(--space-4);}
 #kayak-results table{border-collapse:collapse;margin:0 auto;}
-#kayak-results td{border:1px solid var(--line);padding:4px 8px;}
+#kayak-results td,#kayak-results th{border:1px solid var(--line);padding:4px 8px;}
 #kayak-results a{text-decoration:none;color:var(--action);}
 #kayak-results a:hover{text-decoration:underline;}
 

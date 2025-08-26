@@ -37,7 +37,15 @@
         <label for="kayak-url">Kayak multi-city URL:</label>
         <input type="url" id="kayak-url" required>
         <label for="kayak-flex">Flexibility (± days):</label>
-        <input type="number" id="kayak-flex" min="1" max="7" value="1" required>
+        <select id="kayak-flex" required>
+          <option value="1">±1</option>
+          <option value="2">±2</option>
+          <option value="3">±3</option>
+          <option value="4">±4</option>
+          <option value="5">±5</option>
+          <option value="6">±6</option>
+          <option value="7">±7</option>
+        </select>
         <button type="submit" class="btn-primary">Generate</button>
         <p id="kayak-error" class="error" aria-live="polite"></p>
       </form>
