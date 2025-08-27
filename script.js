@@ -199,6 +199,24 @@ function kayakFlex(url, flex) {
   return { url, dates, options };
 }
 
+function addHoverHighlights(table) {
+  const cells = table.querySelectorAll('tbody td');
+  cells.forEach(td => {
+    td.addEventListener('mouseenter', () => {
+      const col = td.cellIndex;
+      table.querySelectorAll('tr').forEach(row => {
+        if (row.contains(td)) row.classList.add('hover-row');
+        const cell = row.children[col];
+        if (cell) cell.classList.add('hover-col');
+      });
+    });
+    td.addEventListener('mouseleave', () => {
+      table.querySelectorAll('.hover-row').forEach(r => r.classList.remove('hover-row'));
+      table.querySelectorAll('.hover-col').forEach(c => c.classList.remove('hover-col'));
+    });
+  });
+}
+
 function renderKayak(data) {
   kayakResults.innerHTML = '';
   const { url, dates, options } = data;
@@ -239,6 +257,7 @@ function renderKayak(data) {
     });
     table.appendChild(tbody);
     kayakResults.appendChild(table);
+    addHoverHighlights(table);
   } else {
     const combos = generateCombinations(options);
     const list = document.createElement('ul');
