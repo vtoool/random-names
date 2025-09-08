@@ -10,6 +10,12 @@ const kayakFlexSelect = document.getElementById('kayak-flex');
 const kayakError = document.getElementById('kayak-error');
 const tabButtons = document.querySelectorAll('.tab');
 const tabContents = document.querySelectorAll('.tab-content');
+const historyBtn = document.getElementById('history-btn');
+const historyDialog = document.getElementById('history-dialog');
+const historyList = document.getElementById('history-list');
+const closeHistoryBtn = document.getElementById('close-history');
+const clearHistoryBtn = document.getElementById('clear-history');
+const HISTORY_KEY = 'nameHistory';
 const NUM_PILLS = 9;
 
 sanitizeNameData(nameData);
@@ -42,6 +48,37 @@ function sanitizeNameData(data) {
 
 function randomFrom(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function loadHistory() {
+  return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+}
+
+function saveHistory(arr) {
+  localStorage.setItem(HISTORY_KEY, JSON.stringify(arr));
+}
+
+function addHistory(name) {
+  const arr = loadHistory();
+  arr.push(name);
+  saveHistory(arr);
+}
+
+function showHistory() {
+  const arr = loadHistory();
+  historyList.innerHTML = '';
+  if (arr.length === 0) {
+    const li = document.createElement('li');
+    li.textContent = 'No names copied yet.';
+    historyList.appendChild(li);
+  } else {
+    arr.forEach(n => {
+      const li = document.createElement('li');
+      li.textContent = n;
+      historyList.appendChild(li);
+    });
+  }
+  historyDialog.showModal();
 }
 
 function generateName(region) {
@@ -81,6 +118,7 @@ function handleCopy(pill) {
     setTimeout(() => {
       pill.textContent = name;
     }, 700);
+    addHistory(name);
   });
 }
 
@@ -153,6 +191,19 @@ if (kayakForm) {
     } catch (err) {
       kayakError.textContent = 'Could not parse URL.';
     }
+  });
+}
+
+if (historyBtn) {
+  historyBtn.addEventListener('click', showHistory);
+}
+if (closeHistoryBtn) {
+  closeHistoryBtn.addEventListener('click', () => historyDialog.close());
+}
+if (clearHistoryBtn) {
+  clearHistoryBtn.addEventListener('click', () => {
+    saveHistory([]);
+    historyList.innerHTML = '';
   });
 }
 
