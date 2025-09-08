@@ -29,6 +29,7 @@
           <option value="asia">Asia</option>
         </select>
         <button id="refresh" class="btn-primary" title="Refresh names">🔄</button>
+        <button id="history-btn" class="btn-primary" title="Show history">📜</button>
       </div>
       <div id="name-container"></div>
     </div>
@@ -53,6 +54,14 @@
       <div id="kayak-results"></div>
     </div>
   </div>
+  <dialog id="history-dialog">
+    <h2>Copied Names</h2>
+    <ul id="history-list"></ul>
+    <div class="history-actions">
+      <button id="clear-history" class="btn-primary">Clear</button>
+      <button id="close-history" class="btn-primary">Close</button>
+    </div>
+  </dialog>
   <script src="names.js"></script>
   <script src="script.js"></script>
 </body>

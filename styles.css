@@ -305,3 +305,28 @@ h1{
 
 .error{color:var(--brand);}
 
+#history-dialog{
+  border:1px solid var(--line);
+  border-radius:var(--r-lg);
+  padding:var(--space-4);
+  background:var(--card);
+  color:var(--ink);
+}
+
+#history-dialog::backdrop{
+  background:rgba(0,0,0,0.3);
+}
+
+#history-list{
+  list-style:none;
+  padding:0;
+  margin:0 0 var(--space-4);
+  text-align:left;
+}
+
+.history-actions{
+  display:flex;
+  justify-content:center;
+  gap:var(--space-3);
+}
+
