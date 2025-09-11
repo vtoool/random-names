@@ -334,3 +334,12 @@ if (document.fonts && document.fonts.ready) {
   window.addEventListener('load', generateNames);
 }
 
+const tickerPill = document.getElementById('ticker-pill');
+if (tickerPill) {
+  const updateTicker = () => {
+    tickerPill.textContent = generateName(regionSelect.value);
+  };
+  updateTicker();
+  setInterval(updateTicker, 1000);
+}
+
