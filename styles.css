@@ -337,12 +337,14 @@ h1{
   justify-content:center;
 }
 
-.ticker-pill{
-  padding:4px 8px;
-  font-size:14px;
-  opacity:0.4;
-  box-shadow:none;
-  cursor:default;
-  pointer-events:none;
-}
+  .ticker-pill{
+    padding:4px 8px;
+    font-size:12px;
+    opacity:0.1;
+    box-shadow:none;
+    cursor:default;
+    pointer-events:none;
+    background:transparent;
+    border:1px solid transparent;
+  }
 
