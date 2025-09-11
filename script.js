@@ -340,6 +340,7 @@ if (tickerPill) {
     tickerPill.textContent = generateName(regionSelect.value);
   };
   updateTicker();
-  setInterval(updateTicker, 1000);
+  // Update ticker every 0.1 seconds
+  setInterval(updateTicker, 100);
 }
 
