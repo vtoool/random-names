@@ -330,3 +330,18 @@ h1{
   gap:var(--space-3);
 }
 
+#ticker{
+  margin-top:var(--space-4);
+  display:flex;
+  justify-content:center;
+}
+
+.ticker-pill{
+  padding:4px 8px;
+  font-size:14px;
+  opacity:0.4;
+  box-shadow:none;
+  cursor:default;
+  pointer-events:none;
+}
+
