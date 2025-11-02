@@ -200,11 +200,6 @@ h1{
 
 .pill:focus{outline:none; box-shadow:var(--ring-focus);}
 
-.pill.tsa{
-  background:linear-gradient(135deg,var(--brand),var(--accent));
-  color:#fff;
-  border-color:transparent;
-}
 
 .pill.copied{
   background:var(--line);
