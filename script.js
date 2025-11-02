@@ -3,6 +3,7 @@ const regionSelect = document.getElementById('region');
 const refreshBtn = document.getElementById('refresh');
 const container = document.getElementById('name-container');
 const qKey = document.getElementById('q-key');
+const tsaToggle = document.getElementById('tsa-toggle');
 const kayakResults = document.getElementById('kayak-results');
 const kayakForm = document.getElementById('kayak-form');
 const kayakUrl = document.getElementById('kayak-url');
@@ -24,15 +25,16 @@ function sanitizeNameData(data) {
   // Remove diacritics and restrict to English letters.
   const ascii = /^[A-Z' -]+$/;
   Object.values(data).forEach(region => {
-    // Sanitize first names
-    region.first = region.first
-      .map(name =>
-        name
-          .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g, '')
-          .toUpperCase()
-      )
-      .filter(name => ascii.test(name));
+    ['M', 'F'].forEach(gender => {
+      region.first[gender] = region.first[gender]
+        .map(name =>
+          name
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .toUpperCase()
+        )
+        .filter(name => ascii.test(name));
+    });
     // Sanitize last names and strip spaces and punctuation
     region.last = region.last
       .map(name =>
@@ -81,32 +83,90 @@ function showHistory() {
   historyDialog.showModal();
 }
 
-function generateName(region) {
-  const data = nameData[region];
-  const first = randomFrom(data.first).toUpperCase();
-  const last = randomFrom(data.last).toUpperCase();
-  return `-${last}/${first}`;
+const TSA_MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+const MIN_AGE = 13;
+const MAX_AGE = 90;
+
+function randomBirthdate() {
+  const today = new Date();
+  const maxDate = new Date(Date.UTC(today.getUTCFullYear() - MIN_AGE, today.getUTCMonth(), today.getUTCDate()));
+  maxDate.setUTCDate(maxDate.getUTCDate() - 1);
+  const minDate = new Date(Date.UTC(today.getUTCFullYear() - MAX_AGE, today.getUTCMonth(), today.getUTCDate()));
+  const diff = maxDate.getTime() - minDate.getTime();
+  const randomTime = minDate.getTime() + Math.random() * diff;
+  return new Date(randomTime);
 }
 
-function generateNames() {
-  container.innerHTML = '';
-  const pills = [];
-  for (let i = 0; i < NUM_PILLS; i++) {
-    const name = generateName(regionSelect.value);
-    const pill = document.createElement('div');
-    pill.className = 'pill';
-    pill.textContent = name;
-    pill.dataset.name = name;
-    pill.addEventListener('click', () => handleCopy(pill));
-    container.appendChild(pill);
-    pills.push(pill);
+function formatTsaDate(date) {
+  const day = String(date.getUTCDate()).padStart(2, '0');
+  const month = TSA_MONTHS[date.getUTCMonth()];
+  const year = String(date.getUTCFullYear()).slice(-2);
+  return `${day}${month}${year}`;
+}
+
+function generatePerson(regionKey, index) {
+  const data = nameData[regionKey];
+  if (!data) {
+    throw new Error(`Unknown region: ${regionKey}`);
   }
+  const genderOptions = ['M', 'F'].filter(g => data.first[g] && data.first[g].length > 0);
+  if (genderOptions.length === 0) {
+    throw new Error(`No first names configured for region: ${regionKey}`);
+  }
+  const gender = randomFrom(genderOptions);
+  const first = randomFrom(data.first[gender]);
+  const last = randomFrom(data.last);
+  const birthDate = randomBirthdate();
+  const tsaDate = formatTsaDate(birthDate);
+  return {
+    first,
+    last,
+    gender,
+    baseName: `-${last}/${first}`,
+    tsaName: `3DOCSA/DB/${tsaDate}/${gender}/${last}/${first}-${index + 1}.1`
+  };
+}
+
+function createPill(text, extraClass = '') {
+  const pill = document.createElement('div');
+  pill.className = extraClass ? `pill ${extraClass}` : 'pill';
+  pill.textContent = text;
+  pill.dataset.name = text;
+  pill.addEventListener('click', () => handleCopy(pill));
+  return pill;
+}
+
+function equalizePillSizes(pills) {
+  if (!pills.length) return;
   const maxWidth = Math.max(...pills.map(p => p.offsetWidth));
   const maxHeight = Math.max(...pills.map(p => p.offsetHeight));
   pills.forEach(p => {
     p.style.width = `${maxWidth}px`;
     p.style.height = `${maxHeight}px`;
   });
+}
+
+function generateNames() {
+  container.innerHTML = '';
+  const showTsa = tsaToggle ? tsaToggle.checked : false;
+  const basePills = [];
+  const tsaPills = [];
+  for (let i = 0; i < NUM_PILLS; i++) {
+    const person = generatePerson(regionSelect.value, i);
+    const row = document.createElement('div');
+    row.className = showTsa ? 'pill-row' : 'pill-row single';
+    const basePill = createPill(person.baseName);
+    row.appendChild(basePill);
+    basePills.push(basePill);
+    if (showTsa) {
+      const tsaPill = createPill(person.tsaName, 'tsa');
+      row.appendChild(tsaPill);
+      tsaPills.push(tsaPill);
+    }
+    container.appendChild(row);
+  }
+  equalizePillSizes(basePills);
+  equalizePillSizes(tsaPills);
 }
 
 function handleCopy(pill) {
@@ -327,6 +387,9 @@ function renderKayak(data) {
 
 refreshBtn.addEventListener('click', generateNames);
 regionSelect.addEventListener('change', generateNames);
+if (tsaToggle) {
+  tsaToggle.addEventListener('change', generateNames);
+}
 // Wait for fonts to load so the pill dimensions are accurate on first render
 if (document.fonts && document.fonts.ready) {
   document.fonts.ready.then(generateNames);
@@ -337,7 +400,8 @@ if (document.fonts && document.fonts.ready) {
 const tickerPill = document.getElementById('ticker-pill');
 if (tickerPill) {
   const updateTicker = () => {
-    tickerPill.textContent = generateName(regionSelect.value);
+    const person = generatePerson(regionSelect.value, 0);
+    tickerPill.textContent = person.baseName;
   };
   updateTicker();
   // Update ticker every 0.1 seconds
