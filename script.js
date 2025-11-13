@@ -18,6 +18,7 @@ const closeHistoryBtn = document.getElementById('close-history');
 const clearHistoryBtn = document.getElementById('clear-history');
 const HISTORY_KEY = 'nameHistory';
 const NUM_PILLS = 9;
+let currentPeople = [];
 
 sanitizeNameData(nameData);
 
@@ -146,13 +147,12 @@ function equalizePillSizes(pills) {
   });
 }
 
-function generateNames() {
+function renderNames(showTsa = tsaToggle ? tsaToggle.checked : false) {
+  if (!currentPeople.length) return;
   container.innerHTML = '';
-  const showTsa = tsaToggle ? tsaToggle.checked : false;
   const basePills = [];
   const tsaPills = [];
-  for (let i = 0; i < NUM_PILLS; i++) {
-    const person = generatePerson(regionSelect.value, i);
+  currentPeople.forEach(person => {
     const row = document.createElement('div');
     row.className = showTsa ? 'pill-row' : 'pill-row single';
     const basePill = createPill(person.baseName);
@@ -164,9 +164,17 @@ function generateNames() {
       tsaPills.push(tsaPill);
     }
     container.appendChild(row);
-  }
+  });
   equalizePillSizes(basePills);
   equalizePillSizes(tsaPills);
+}
+
+function generateNames() {
+  currentPeople = [];
+  for (let i = 0; i < NUM_PILLS; i++) {
+    currentPeople.push(generatePerson(regionSelect.value, i));
+  }
+  renderNames(tsaToggle ? tsaToggle.checked : false);
 }
 
 function handleCopy(pill) {
@@ -388,7 +396,7 @@ function renderKayak(data) {
 refreshBtn.addEventListener('click', generateNames);
 regionSelect.addEventListener('change', generateNames);
 if (tsaToggle) {
-  tsaToggle.addEventListener('change', generateNames);
+  tsaToggle.addEventListener('change', () => renderNames());
 }
 // Wait for fonts to load so the pill dimensions are accurate on first render
 if (document.fonts && document.fonts.ready) {
