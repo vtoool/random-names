@@ -154,7 +154,7 @@ function renderNames(showTsa = tsaToggle ? tsaToggle.checked : false) {
   const tsaPills = [];
   currentPeople.forEach(person => {
     const row = document.createElement('div');
-    row.className = showTsa ? 'pill-row' : 'pill-row single';
+    row.className = showTsa ? 'pill-row double' : 'pill-row single';
     const basePill = createPill(person.baseName);
     row.appendChild(basePill);
     basePills.push(basePill);
@@ -165,8 +165,19 @@ function renderNames(showTsa = tsaToggle ? tsaToggle.checked : false) {
     }
     container.appendChild(row);
   });
-  equalizePillSizes(basePills);
-  equalizePillSizes(tsaPills);
+  if (showTsa) {
+    equalizePillHeights([...basePills, ...tsaPills]);
+  } else {
+    equalizePillSizes(basePills);
+  }
+}
+
+function equalizePillHeights(pills) {
+  if (!pills.length) return;
+  const maxHeight = Math.max(...pills.map(p => p.offsetHeight));
+  pills.forEach(p => {
+    p.style.height = `${maxHeight}px`;
+  });
 }
 
 function generateNames() {
