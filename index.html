@@ -9,8 +9,35 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  
+  <!-- Added styles for the new top CTA link -->
+  <style>
+    .top-cta {
+      display: block;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #6B7280; /* matches text-muted */
+      font-family: 'Inter', sans-serif;
+      font-size: 0.875rem;
+      text-decoration: none;
+      transition: color 0.2s ease, transform 0.2s ease;
+      opacity: 0.8;
+    }
+    .top-cta:hover {
+      color: #6366F1; /* matches primary */
+      opacity: 1;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      transform: translateY(-1px);
+    }
+  </style>
 </head>
 <body>
+  <!-- New Link Added Here -->
+  <a href="https://www.cabin-story.com" target="_blank" class="top-cta">
+    Coming soon: cabin-story.com &rarr;
+  </a>
+
   <div class="card">
     <div class="tabs">
       <button class="tab active" data-tab="names">Random Names</button>
